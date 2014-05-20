@@ -270,7 +270,7 @@ window.addEventListener('load',function(e) {
               currCoord[fixPos(object.p.x, wOffset)][fixPos(object.p.y, hOffset)] = "0";
               currCoord[fixPos(object.p.x, wOffset)][fixPos(object.p.y, -hOffset)] = "0";
               object.p.x -= 100 * scSize;
-              wait = 40;
+              wait = 20;
             }
           }
         } else {
@@ -280,7 +280,7 @@ window.addEventListener('load',function(e) {
             currCoord[nextX][nextY] = String(object.p.name);
             currCoord[fixPos(object.p.x, wOffset)][fixPos(object.p.y)] = "0";
             object.p.x -= 100 * scSize;
-            wait = 40;
+            wait = 20;
           }
         }
         break;
@@ -297,7 +297,7 @@ window.addEventListener('load',function(e) {
               currCoord[fixPos(object.p.x, -wOffset)][fixPos(object.p.y, hOffset)] = "0";
               currCoord[fixPos(object.p.x, -wOffset)][fixPos(object.p.y, -hOffset)] = "0";
               object.p.x += 100 * scSize;
-              wait = 40;
+              wait = 20;
             }
           }
         } else {
@@ -307,7 +307,7 @@ window.addEventListener('load',function(e) {
             currCoord[nextX][nextY] = String(object.p.name);
             currCoord[fixPos(object.p.x, -wOffset)][fixPos(object.p.y)] = "0";
             object.p.x += 100 * scSize;
-            wait = 40;
+            wait = 20;
           }
         }
         break;
@@ -324,7 +324,7 @@ window.addEventListener('load',function(e) {
               currCoord[fixPos(object.p.x, wOffset)][fixPos(object.p.y, hOffset)] = "0";
               currCoord[fixPos(object.p.x, -wOffset)][fixPos(object.p.y, hOffset)] = "0";
               object.p.y -= 100 * scSize;
-              wait = 40;
+              wait = 20;
             }
           }
         } else {
@@ -334,7 +334,7 @@ window.addEventListener('load',function(e) {
             currCoord[nextX][nextY] = String(object.p.name);
             currCoord[fixPos(object.p.x)][fixPos(object.p.y, hOffset)] = "0";
             object.p.y -= 100 * scSize;
-            wait = 40;
+            wait = 20;
           }
         }
         break;
@@ -351,7 +351,7 @@ window.addEventListener('load',function(e) {
               currCoord[fixPos(object.p.x, wOffset)][fixPos(object.p.y, -hOffset)] = "0";
               currCoord[fixPos(object.p.x, -wOffset)][fixPos(object.p.y, -hOffset)] = "0";
               object.p.y += 100 * scSize;
-              wait = 40;
+              wait = 20;
             }
           }
         } else {
@@ -361,7 +361,7 @@ window.addEventListener('load',function(e) {
             currCoord[nextX][nextY] = String(object.p.name);
             currCoord[fixPos(object.p.x)][fixPos(object.p.y, -hOffset)] = "0";
             object.p.y += 100 * scSize;
-            wait = 40;
+            wait = 20;
           }
         }
         break;
@@ -420,7 +420,10 @@ window.addEventListener('load',function(e) {
       moveCount++;
       var moveText = Q("UI.Text").first();
       moveText.p.label = "Moves: " + moveCount.toString();
-      //undoFlag = true;
+      
+      /* Show Reset Button After 1 Movement */
+      if (moveCount > 0) Q("UI.Container").at(1).p.hidden = false;
+      /* Show Undo Button After 2 Movement */
       if (moveCount > 1) Q("UI.Container").at(0).p.hidden = false;
     }
     return;
@@ -535,8 +538,8 @@ window.addEventListener('load',function(e) {
 
     var vb1 = stage.insert(new Q.VB({ name: "vb", x: 100 * scSize, y: 150 * scSize, z: 2, scale: scSize, type: Q.SPRITE_UI}));
     var vb2 = stage.insert(new Q.VB({ name: "vb", x: 100 * scSize, y: 350 * scSize, z: 2, scale: scSize, type: Q.SPRITE_UI}));
-    var vb3 = stage.insert(new Q.VB({ name: "vb", x: 400 * scSize, y: 150 * scSize, z: 2, scale: scSize, type: Q.SPRITE_UI}));
-    var vb4 = stage.insert(new Q.VB({ name: "vb", x: 400 * scSize, y: 350 * scSize, z: 2, scale: scSize, type: Q.SPRITE_UI}));
+    var vb3 = stage.insert(new Q.VB({ name: "vb", x: 400 * scSize, y: 150 * scSize, z: 2, scale: scSize, type: Q.SPRITE_UI, flip: "x"}));
+    var vb4 = stage.insert(new Q.VB({ name: "vb", x: 400 * scSize, y: 350 * scSize, z: 2, scale: scSize, type: Q.SPRITE_UI, flip: "x"}));
 
     /* Duplicate Matrix After Object Initialization */
     duplicateMatrix4by5(currCoord, prevCoord);
@@ -563,7 +566,8 @@ window.addEventListener('load',function(e) {
       fill: "gray",
       border: 5,
       y: 225,
-      x: Q.width/3
+      x: Q.width/3,
+      hidden: true
     }));
     
     /* Reset Button */
